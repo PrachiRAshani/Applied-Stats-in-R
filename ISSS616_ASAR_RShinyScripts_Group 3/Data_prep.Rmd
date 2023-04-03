@@ -1,0 +1,29 @@
+```{r, message = FALSE, warning = FALSE}
+library(data.table)
+library(here)
+library(janitor)
+library(tidyverse)
+library(skimr)
+library(yarrr)
+library(lubridate)
+library(rstudioapi)
+library(effsize)
+
+
+cols_wanted <- c('title', 'genre', 'release_date', 'runtime', 'imdb_score', 'language')
+
+netflix <- fread("data_fr_shiny.csv")
+netflix$imdb_score <- netflix$IMDb_Score
+netflix$language <- netflix$Languages
+netflix$genre <- netflix$Primary_G1
+netflix <- clean_names(netflix)
+names(netflix) <- tolower(names(netflix))
+netflix <- subset(netflix, series_or_movie=='Movie')
+netflix <- netflix[order(-imdb_score),]
+netflix <- subset(netflix, )
+netflix <- subset(netflix, select=cols_wanted)
+netflix <- na.omit(netflix)
+netflix <- filter(netflix, genre ==c('Action','Adventure', 'Animation','Comedy', 'Drama', 'Documentary', 'Horror'))
+saveRDS(netflix, "netflix_data.Rds")
+
+```
